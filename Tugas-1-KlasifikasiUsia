@@ -1,43 +1,39 @@
-function tambah(a, b) {
-    return a+b;
-}
-
-function kurang(a, b) {
-    return a-b;
-}
-
-function kali(a, b) {
-    return a*b;
-}
-
-function bagi(a, b) {
-    if (b === 0) {
-        return "Tidak bisa membagi dengan nol!";
+function kategoriUsia(usia) {
+    if (usia >= 0 && usia <= 12) {
+        return "Anak-anak";
+    } else if (usia >= 13 && usia <= 17) {
+        return "Remaja";
+    } else if (usia >= 18 && usia <= 59) {
+        return "Dewasa";
+    } else if (usia >= 60) {
+        return "Lansia";
+    } else {
+        return "Usia tidak valid";
     }
-    return a/b;
 }
 
-let operasi = parseInt(prompt("Pilih operasi: \n1. Tambah\n2. Kurang\n3. Kali\n4. Bagi"));
-let angka1 = parseFloat(prompt("Masukkan angka pertama:"));
-let angka2 = parseFloat(prompt("Masukkan angka kedua:"));
+let jumlahAnak = 0;
+let jumlahRemaja = 0;
+let jumlahDewasa = 0;
+let jumlahLansia = 0;
 
-let hasil;
+let dataUsia = [5, 16, 30, 65, 12, 18, 70, 14]; // Contoh input usia
 
-switch (operasi) {
-    case 1:
-        hasil = tambah(angka1, angka2);
-        break;
-    case 2:
-        hasil = kurang(angka1, angka2);
-        break;
-    case 3:
-        hasil = kali(angka1, angka2);
-        break;
-    case 4:
-        hasil = bagi(angka1, angka2);
-        break;
-    default:
-        hasil = "Operasi tidak valid";
+for (let i = 0; i < dataUsia.length; i++) {
+    let kategori = kategoriUsia(dataUsia[i]);
+    if (kategori === "Anak-anak") {
+        jumlahAnak++;
+    } else if (kategori === "Remaja") {
+        jumlahRemaja++;
+    } else if (kategori === "Dewasa") {
+        jumlahDewasa++;
+    } else if (kategori === "Lansia") {
+        jumlahLansia++;
+    }
 }
 
-console.log("Hasil:", hasil);
+console.log("Jumlah Anak-anak:", jumlahAnak);
+console.log("Jumlah Remaja:", jumlahRemaja);
+console.log("Jumlah Dewasa:", jumlahDewasa);
+console.log("Jumlah Lansia:", jumlahLansia);
+
