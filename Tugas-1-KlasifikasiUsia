@@ -1,23 +1,22 @@
 function tambah(a, b) {
-    return a + b;
+    return a+b;
 }
 
 function kurang(a, b) {
-    return a - b;
+    return a-b;
 }
 
 function kali(a, b) {
-    return a * b;
+    return a*b;
 }
 
 function bagi(a, b) {
     if (b === 0) {
         return "Tidak bisa membagi dengan nol!";
     }
-    return a / b;
+    return a/b;
 }
 
-// Simulasi input
 let operasi = parseInt(prompt("Pilih operasi: \n1. Tambah\n2. Kurang\n3. Kali\n4. Bagi"));
 let angka1 = parseFloat(prompt("Masukkan angka pertama:"));
 let angka2 = parseFloat(prompt("Masukkan angka kedua:"));
