@@ -1,0 +1,110 @@
+//Endpoint Token yang akan diambil
+
+{
+  "username": "admin",
+  "password": "password123"
+}
+
+//Untuk environtment .env diisi berikut 
+
+{
+  "username": "admin",
+  "password": "password123"
+}
+
+
+//Jika token sudah muncul maka masukan pada variabel token 
+{
+  "token": "abc123xyz456"
+}
+
+//Data untuk membuat Booking, buat file JSON bernama Data/bookingData.json
+{
+  "firstname": "John",
+  "lastname": "Doe",
+  "totalprice": 150,
+  "depositpaid": true,
+  "bookingdates": {
+    "checkin": "2024-06-01",
+    "checkout": "2024-06-10"
+  },
+  "additionalneeds": "Breakfast"
+}
+
+//Script Otomation Chai disimpan pada file Test/bookingTest.js
+
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const expect = chai.expect;
+const dotenv = require('dotenv');
+const fs = require('fs');
+const path = require('path');
+
+chai.use(chaiHttp);
+dotenv.config();
+
+const BASE_URL = 'https://restful-booker.herokuapp.com';
+let token = '';
+let bookingId = '';
+let bookingData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/bookingData.json')));
+
+describe('Tugas 2 - API E2E Automation Test', () => {
+
+  it('1. Autentikasi dan Ambil Token', (done) => {
+    chai.request(BASE_URL)
+      .post('/auth')
+      .send({
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('token');
+        token = res.body.token;
+        console.log("✅ Token didapat:", token);
+        done();
+      });
+  });
+
+  it('2. Create Booking dan Ambil bookingId', (done) => {
+    chai.request(BASE_URL)
+      .post('/booking')
+      .send(bookingData)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('bookingid');
+        bookingId = res.body.bookingid;
+        console.log("✅ Booking ID:", bookingId);
+        done();
+      });
+  });
+
+  it('3. Get Booking dan Validasi Isi Data', (done) => {
+    chai.request(BASE_URL)
+      .get(`/booking/${bookingId}`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        const body = res.body;
+        expect(body.firstname).to.equal(bookingData.firstname);
+        expect(body.lastname).to.equal(bookingData.lastname);
+        expect(body.totalprice).to.equal(bookingData.totalprice);
+        expect(body.depositpaid).to.equal(bookingData.depositpaid);
+        expect(body.bookingdates.checkin).to.equal(bookingData.bookingdates.checkin);
+        expect(body.bookingdates.checkout).to.equal(bookingData.bookingdates.checkout);
+        expect(body.additionalneeds).to.equal(bookingData.additionalneeds);
+        console.log("✅ Booking data sesuai dengan input");
+        done();
+      });
+  });
+
+  it('4. Delete Booking menggunakan Token', (done) => {
+    chai.request(BASE_URL)
+      .delete(`/booking/${bookingId}`)
+      .set('Cookie', `token=${token}`)
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        console.log("✅ Booking berhasil dihapus");
+        done();
+      });
+  });
+});
