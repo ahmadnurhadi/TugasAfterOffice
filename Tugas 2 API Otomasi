@@ -61,7 +61,7 @@ describe('Tugas 2 - API E2E Automation Test', () => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('token');
         token = res.body.token;
-        console.log("✅ Token didapat:", token);
+        console.log("Token didapat:", token);
         done();
       });
   });
@@ -74,7 +74,7 @@ describe('Tugas 2 - API E2E Automation Test', () => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('bookingid');
         bookingId = res.body.bookingid;
-        console.log("✅ Booking ID:", bookingId);
+        console.log("Booking ID:", bookingId);
         done();
       });
   });
@@ -92,7 +92,7 @@ describe('Tugas 2 - API E2E Automation Test', () => {
         expect(body.bookingdates.checkin).to.equal(bookingData.bookingdates.checkin);
         expect(body.bookingdates.checkout).to.equal(bookingData.bookingdates.checkout);
         expect(body.additionalneeds).to.equal(bookingData.additionalneeds);
-        console.log("✅ Booking data sesuai dengan input");
+        console.log("Booking data sesuai dengan input");
         done();
       });
   });
@@ -103,7 +103,7 @@ describe('Tugas 2 - API E2E Automation Test', () => {
       .set('Cookie', `token=${token}`)
       .end((err, res) => {
         expect(res).to.have.status(201);
-        console.log("✅ Booking berhasil dihapus");
+        console.log("Booking berhasil dihapus");
         done();
       });
   });
